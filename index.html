@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>validate demo</title>
+    <style>
+      body{
+        font-size: 14px;
+      }
+      p{
+        display: block;
+        margin: auto;
+      }
+      input{
+        width: 300px;
+      }
+      .validate{
+        margin-top: 15px;
+        height: 20px;
+        display: block;
+      }
+      .add-new{
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <input class="validate" validate-rule="int|len:{min:3,max:5}" validate-success="输入正确" validate-fail="请输入数字" placeholder="输入整数">
+
+      <div class="add-new" id="add-new">
+      <hr>
+        <form id="rule-form">
+          <label for="rule">验证规则:</label>
+          <input type="text" name="rule" id="rule" validate-rule="alpha" placeholder="采用'|'分割不同规则" /><br>
+          <label for="trigger">触发条件:</label>
+          <input type="text" name="trigger" id="trigger" validate-rule="alpha|in:['change', 'keypress', 'keydown', 'keyup', 'blur']" 
+          placeholder="one of 'change', 'keypress', 'keydown', 'keyup', 'blur' "/><br>
+          <label for="success">验证通过提示:</label>
+          <input type="text" name="success" id="success" validate-rule="alpha"/><br>
+          <label for="fail">验证失败提示:</label>
+          <input type="text" name="fail" id="fail" validate-rule="alpha"/><br>
+        </form>
+      <button id="addButton">新增一个测试</button>
+      <button id="validate-all">测试全部</button>
+      </div>
+    </div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
