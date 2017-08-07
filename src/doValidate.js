@@ -4,6 +4,9 @@ import showInfo from './showInfo.js';
 
 let userDefine = {};
 
+/* 
+** parse params from validate-rule
+ */
 function parseParams (ruleParams) {
   let pattern = new RegExp('^\{.*\}$');
   if (pattern.test(ruleParams)) {
@@ -22,7 +25,19 @@ function parseParams (ruleParams) {
   }
 }
 
+/*
+** validate the input type with validate-group
+ */
+function validateGroup(eventTarget){
+  let groupName = eventTarget.getAttribute('validate-group');
+  let targetType = eventTarget.tagName;
+  if(['radio', 'checkbox'].indexOf(eventTarget.type) <0 ) return;
+  
+  // toDo: add function
+}
+
 function doValidate(eventTarget) {
+  if (eventTarget.getAttribute('validate-group')) return validateGroup(eventTarget);
   let validateRule = eventTarget.getAttribute('validate-rule');
   let validateFail = false;
   if (!validateRule) {

@@ -2,14 +2,16 @@
   "name": "validate-js",
   "version": "0.0.1",
   "description": "A js validate tool",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "build": "node_modules/babel-cli/bin/babel.js src -d dist --presets es2015 --plugins add-module-exports",
+    "build": "npm run build-node && npm run build-min",
+    "build-node": "node_modules/babel-cli/bin/babel.js src -d dist --presets es2015 --plugins add-module-exports",
+    "build-min": "node_modules/webpack/bin/webpack.js --env=prod --progress --profile --colors",
     "dev": "NODE_ENV=dev node_modules/webpack-dev-server/bin/webpack-dev-server.js --devtool eval-source-map --progress --colors --hot --inline"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Ysanwen/validate-js.git"
+    "url": "https://git@github.com/Ysanwen/validate-js.git"
   },
   "keywords": [
     "javascript",
@@ -20,7 +22,13 @@
   "bugs": {
     "url": "https://github.com/Ysanwen/validate-js/issues"
   },
-  "homepage": "https://github.com/Ysanwen/validate-js#readme",
+  "homepage": "https://github.com/Ysanwen/validate-js#README.md",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENCE",
+    "validate-js.min.js"
+  ],
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",

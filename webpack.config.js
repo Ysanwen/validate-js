@@ -1,14 +1,45 @@
-var path = require('path')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+var path = require('path');
+var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+var DEV =  process.env.NODE_ENV === 'dev';
+
+var plugins = DEV ? 
+  [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      inject: true,
+      chunks: ['index']
+    })
+  ] :
+  [
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        screw_ie8: true,
+        drop_console: true
+      },
+      comments: false
+    })
+  ];
 
 module.exports = {
   entry: {
-    index: './index.js'
+    index: './src/index.js'
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: '[name].js',
-    publicPath: '/',
+    path: path.resolve(__dirname),
+    filename: DEV ? '[name].js' : 'validate-js.min.js',
+    publicPath:'/'
   },
   module: {
     rules: [
@@ -24,12 +55,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-      filename: 'index.html',
-      inject: true,
-      chunks: ['index']//需要引入的Chunk，不配置就会引入所有页面的资源
-    })
-  ]
+  plugins: plugins
 }
