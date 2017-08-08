@@ -21,7 +21,7 @@
       .validate{
         margin-top: 15px;
         height: 20px;
-        display: block;
+        /*display: block;*/
       }
       .add-new{
         margin-top: 30px;
@@ -31,18 +31,19 @@
   <body>
     <div id="app">
       <input class="validate" validate-rule="int|len:{min:3,max:5}" validate-success="输入正确" validate-fail="请输入数字" placeholder="输入整数">
-      
+      <input class="validate" validate-rule="test:{a:1,b:2}" validate-success="测试正确" validate-fail="测试失败" placeholder="自定义验证">
       <select name="test-select" class="validate" validate-rule="in:['a','b']">
         <option value="a">a</option>
         <option value="b">b</option>
         <option value="c">c</option>
       </select>
 
-      <input type="radio" class="validate" name="radio" value="radio1" validate-group="group1"/> radio1<br />
-      <input type="radio" class="validate" name="radio" value="radio2" validate-group="group1"/> radio2<br />
+      <div><input type="radio" class="validate" name="radio" value="radio1" validate-group="group1"/> radio1</div>
+      <div><input type="radio" class="validate" name="radio" value="radio2" validate-group="group1" validate-rule="in:['radio2','radio3']"/> radio2</div>
+      <br/>
 
-
-      <input type="checkbox" name="checkbox1" value="checkbox1"/>checkbox1<br />
+      <input type="checkbox" class="validate" name="checkbox1" validate-group="group2" value="checkbox1"/>checkbox1<br />
+      <input type="checkbox" class="validate" name="checkbox2" validate-group="group2" value="checkbox2" validate-rule="haha"/>checkbox1<br />
 
       <div class="add-new" id="add-new">
       <hr>
@@ -87,6 +88,10 @@
       })
       // attachEvent();
       validate.autoValidate();
-  }
+      validate.addRule('test', function(value, ruleParams){
+        console.log(value,ruleParams);
+        return false
+      })
+    }
   </script>
 </html>

@@ -1,11 +1,8 @@
-
-let config = {
-  eventList: ['change', 'keypress', 'keydown', 'keyup', 'blur'],
-  addTrigger: function(triggerEventName) {
-    config.eventList.contact(triggerEventName)
-  },
-  ruleNames: {
-    contains: 'contains',
+let version = '0.0.1';
+let eventList = ['change', 'keypress', 'keydown', 'keyup', 'blur'];
+let userDefine = {};
+let ruleNames = {
+  contains: 'contains',
     equals: 'equals',
     afterDate: 'isAfter',
     alpha: 'isAlpha',
@@ -67,6 +64,23 @@ let config = {
     doToString: 'toString',
     doKeepWhiteList: 'whitelist',
     doNormalizeEmail: 'normalizeEmail'
-  }
 }
-export default config
+
+function config() {
+  this.version = version;
+  this.eventList = eventList;
+  this.userDefine = userDefine;
+  this.ruleNames = ruleNames;
+  this.addTrigger = (triggerEventName) => {
+    this.eventList = this.eventList.contact(triggerEventName)
+  };
+ this.addRule = (ruleName, callbackFunc) => {
+  if (Object.prototype.toString.call(callbackFunc) === '[object Function]') {
+    this.userDefine[ruleName] = callbackFunc
+  } else {
+    throw new Error('ruleName ' + ruleName + ' should be a function')
+  }
+ }
+}
+
+export default new config()

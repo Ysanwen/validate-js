@@ -1,12 +1,13 @@
 import attachEvent from './attachEvent.js';
 import doValidate from './doValidate.js';
 import validator from 'validator';
+import config from './config.js';
 
-function validate () {
+function generateValidate () {
   for(let item of Object.keys(validator)) {
     this[item] = validator[item]
   }
-
+  this.version = config.version;
   if ( typeof window !== 'undefined') {
     this.autoValidate = attachEvent;
     this.doValidate = doValidate;
@@ -17,8 +18,11 @@ function validate () {
         doValidate(item)
       }
     };
-    window.validate = this;
+    // user define rule
+    this.addRule = config.addRule;
+    return this;
   }
 }
 
-export default new validate()
+export default new generateValidate()
+export var validate = new generateValidate()

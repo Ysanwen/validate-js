@@ -58,6 +58,35 @@ validate.doValidate(el)    //验证指定的input元素。
 ```
 ![样例](/sample.gif)
 
+支持自定义验证规则
+
+```html
+<input class="validate" validate-rule="myRule:{min:1,max:2}" placeholder="自定义规则">
+
+<script type="text/javascript">
+  function myRuleFunction (inputValue, ruleParams) {
+    /* 
+    ** inputValue为input标签获取的value,自定义的rule函数需接受此参数,不可省略。
+    ** ruleParams为验证规则的参数,即为示例中的{min:1,max:2},无需规则参数时可以省略
+    ** 
+     */
+    }
+    // 此处进行相关验证或是其他处理逻辑
+    return true //必须返回true 或 false
+  }
+  validate.addRule('myRule', myRuleFunction)  //增加规则到validate对象。'myrule'需与validate-rule中一致。
+  validate.autoValidate();
+</script>
+```
+
+对于radio和checkbox可能存在的组合验证，可通过validate-group指定相同的名称进行组合，一组相同的validate-group只需
+在其中的一个element中指定validate-rule,相关的验证结果会显示在具有validate-rule的element下面。
+
+```html
+<div><input type="radio" class="validate" name="radio" value="radio1" validate-group="group1"/> radio1</div>
+<div><input type="radio" class="validate" name="radio" value="radio2" validate-group="group1" validate-rule="in:['radio2','radio3']"/> radio2</div>
+```
+
 ### 支持的规则
 
 同[validator.js][validator-url]一致，参数部分通过`:`分割，例如:`len:{min:6,max:50}`,`in:['a','b']`,`str|contains:"abc"`
