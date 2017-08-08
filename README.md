@@ -14,8 +14,8 @@ var validate = require('validate-js');
 
 validate.isInt('abc'); //=> false
 
-//更多用法请参考[validator.js][validator-url]
 ```
+支持的方法请参考:[validator.js][validator-url]
 
 通过组件化引入浏览器端使用:
 
