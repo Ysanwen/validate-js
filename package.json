@@ -30,8 +30,8 @@
     "validate-js.min.js"
   ],
   "dependencies": {
-    "tooltip.js": "^1.1.4",
     "validator": "^8.0.0",
+    "tooltip.js": "^1.1.4"
   },
   "devDependencies": {
     "tooltip.js": "^1.1.4",
