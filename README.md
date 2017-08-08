@@ -14,8 +14,8 @@ var validate = require('validate-js');
 
 validate.isInt('abc'); //=> false
 
-//更多用法请参考[validator.js][validator-url]
 ```
+支持的方法请参考:[validator.js][validator-url]
 
 通过组件化引入浏览器端使用:
 
@@ -74,7 +74,7 @@ validate.doValidate(el)    //验证指定的input元素。
     // 此处进行相关验证或是其他处理逻辑
     return true //必须返回true 或 false
   }
-  validate.addRule('myRule', myRuleFunction)  //增加规则到validate对象。'myrule'需与validate-rule中一致。
+  validate.addRule('myRule', myRuleFunction)  //增加规则到validate对象。'myRule'需与validate-rule中一致。
   validate.autoValidate();
 </script>
 ```
