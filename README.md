@@ -46,6 +46,15 @@ validate.doValidate(el)    //验证指定的input元素。
 - 验证规则通过`validate-rule`指定，规则之间通过`|`分割,由左至右的顺序执行,遇到验证失败直接停止并提示信息。
   例如:`validate-rule="doTrim|int:{min:1,max:10}"`
 - 提示信息,`validate-success`自定义验证通过时显示信息,不设置则不显示。`validate-fail`自定义验证失败时的显示信息,不设置则显示默认信息。
+- 提示信息位置`validate-tips-position`,默认位置为'bottom-start',即在被验证元素底部,左侧对齐位置显示验证结果。可接受的value为:
+
+```
+  'top', 'top-start',  'top-end', 
+  'right', 'right-start', 'right-end', 
+  'bottom', 'bottom-start', 'bottom-end', 
+  'left', 'left-start', 'left-end'
+```
+![position](/position.png)
 
 ### 示例
 
