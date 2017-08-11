@@ -10,15 +10,21 @@ var _tooltip2 = _interopRequireDefault(_tooltip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import Tooltip from 'tooltip.js/dist/tooltip.min.js'
-
 var tips = {};
 
-function createTip(el, tipId) {
-  var template = '<div id="arrow-' + tipId + '"></div><div id="inner-' + tipId + '"></div>';
+var positionAarea = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'];
+
+function createTip(el, tipId, info) {
+  var template = '<div class="tooltip" role="tooltip"><div class="tooltip-arrow" id="arrow-' + tipId + '"></div><div class="tooltip-inner" id="inner-' + tipId + '"></div></div>';
+  var placement = 'bottom-start';
+  var tipsPosition = el.getAttribute('validate-tips-position');
+  if (tipsPosition && positionAarea.indexOf(tipsPosition) >= 0) {
+    placement = tipsPosition;
+  }
   tips[tipId] = new _tooltip2.default(el, {
-    placement: 'bottom-start',
-    title: template,
+    placement: placement,
+    title: info,
+    template: template,
     html: true,
     trigger: 'manual'
   });
@@ -47,14 +53,14 @@ function showValidateResult(el, validateResult) {
 
 function showTip(el, tipId, info, successOrFail) {
   if (!tips[tipId]) {
-    createTip(el, tipId);
+    createTip(el, tipId, info);
   }
   tips[tipId].show();
   // set style
   var innerEl = document.getElementById('inner-' + tipId);
-  innerEl.innerHTML = info;
   innerEl.style.fontSize = '12px';
   innerEl.style.color = successOrFail ? 'green' : 'red';
+  innerEl.className += successOrFail ? ' tips-success' : ' tips-fail';
 }
 function hideTip(tipId) {
   if (tips[tipId]) return tips[tipId].dispose();

@@ -144,6 +144,10 @@ function validateGroup(eventTarget) {
 }
 
 function doValidate(eventTarget) {
+  if (eventTarget.type === 'file') {
+    // TODO add file upload validate
+    return;
+  }
   if (eventTarget.getAttribute('validate-group')) return validateGroup(eventTarget);
   var validateRule = eventTarget.getAttribute('validate-rule');
   var validateFail = false;
