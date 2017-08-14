@@ -143,24 +143,34 @@ function validateGroup(eventTarget) {
   }
 }
 
-function doValidate(eventTarget) {
-  if (eventTarget.type === 'file') {
-    // TODO add file upload validate
-    return;
+function getValue(eventTarget) {
+  if (eventTarget.type === 'radio' || eventTarget.type === 'checkbox') {
+    if (eventTarget.checked) return eventTarget.value;
+  } else if (eventTarget.type === 'file') {
+    return eventTarget.files;
+  } else {
+    return eventTarget.value;
   }
+}
+
+function doValidate(eventTarget) {
   if (eventTarget.getAttribute('validate-group')) return validateGroup(eventTarget);
   var validateRule = eventTarget.getAttribute('validate-rule');
   var validateFail = false;
+  var value = getValue(eventTarget);
   if (!validateRule) {
     // default use required rule
-    var value = _validator2.default.trim(eventTarget.value);
-    validateFail = _validator2.default.isEmpty(value);
+    if (Object.prototype.toString.call(value).indexOf('FileList') > 0) {
+      validateFail = value.length <= 0;
+    } else {
+      value = _validator2.default.trim(value);
+      validateFail = _validator2.default.isEmpty(value);
+    }
     if (validateFail) {
       // validate fail
       console.error('need value');
     }
   } else {
-    var _value = eventTarget.value;
     var validateFunctions = validateRule.split('|');
     var _iteratorNormalCompletion3 = true;
     var _didIteratorError3 = false;
@@ -179,10 +189,10 @@ function doValidate(eventTarget) {
         var validateResult = void 0;
         if (ruleName in _config2.default.ruleNames) {
           // call the validator function
-          validateResult = ruleParams ? _validator2.default[_config2.default.ruleNames[ruleName]].apply(this, [_value, ruleParams]) : _validator2.default[_config2.default.ruleNames[ruleName]].apply(this, [_value]);
+          validateResult = ruleParams ? _validator2.default[_config2.default.ruleNames[ruleName]].apply(this, [value, ruleParams]) : _validator2.default[_config2.default.ruleNames[ruleName]].apply(this, [value]);
         } else if (ruleName in userDefine) {
           // call user define function
-          validateResult = ruleParams ? userDefine[ruleName].apply(this, [_value, ruleParams]) : userDefine[ruleName].apply(this, [_value]);
+          validateResult = ruleParams ? userDefine[ruleName].apply(this, [value, ruleParams]) : userDefine[ruleName].apply(this, [value]);
         } else {
           // no this validate name
           (0, _showInfo2.default)(eventTarget, false);
@@ -192,8 +202,8 @@ function doValidate(eventTarget) {
         var pattern = new RegExp('^do.*');
         if (pattern.test(ruleName)) {
           // after do some filter function, need to set new value
-          _value = validateResult;
-          eventTarget.value = _value;
+          value = validateResult;
+          eventTarget.value = value;
         } else {
           // validate fail
           if (!validateResult) {

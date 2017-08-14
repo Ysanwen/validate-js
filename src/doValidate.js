@@ -85,24 +85,34 @@ function validateGroup(eventTarget){
   }
 }
 
-function doValidate(eventTarget) {
-  if (eventTarget.type === 'file'){
-    // TODO add file upload validate
-    return
+function getValue(eventTarget) {
+  if (eventTarget.type === 'radio' || eventTarget.type === 'checkbox') {
+    if (eventTarget.checked) return eventTarget.value;
+  } else if (eventTarget.type === 'file') {
+    return eventTarget.files;
+  } else {
+    return eventTarget.value
   }
+}
+
+function doValidate(eventTarget) {
   if (eventTarget.getAttribute('validate-group')) return validateGroup(eventTarget);
   let validateRule = eventTarget.getAttribute('validate-rule');
   let validateFail = false;
+  let value = getValue(eventTarget);
   if (!validateRule) {
     // default use required rule
-    let value = validator.trim(eventTarget.value);
-    validateFail = validator.isEmpty(value);
+    if (Object.prototype.toString.call(value).indexOf('FileList') > 0) {
+      validateFail = value.length <= 0
+    } else {
+      value = validator.trim(value);
+      validateFail = validator.isEmpty(value);
+    }
     if (validateFail) {
       // validate fail
       console.error('need value');
     }
   } else {
-    let value = eventTarget.value;
     let validateFunctions = validateRule.split('|');
     for (let item of validateFunctions) {
       let ruleName, ruleParams;
