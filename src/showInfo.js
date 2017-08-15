@@ -55,7 +55,8 @@ function showTip(el, tipId, info, successOrFail) {
   let innerEl = document.getElementById('inner-' + tipId);
   innerEl.style.fontSize = '12px';
   innerEl.style.color = successOrFail ? 'green' : 'red';
-  innerEl.className += successOrFail ? ' tips-success' : ' tips-fail';
+  innerEl.className = successOrFail ? 'tooltip-inner tips-success' : 'tooltip-inner tips-fail';
+  innerEl.innerHTML = info;
 }
 function hideTip(tipId) {
   if (tips[tipId]) return tips[tipId].dispose();
