@@ -77,32 +77,11 @@ function validateGroup(eventTarget) {
   var elementWithRule = [];
   var successInfo = [];
   var failInfo = [];
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
-
-  try {
-    for (var _iterator2 = groupList[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var item = _step2.value;
-
-      item.checked && value.push(item.value);
-      item.getAttribute('validate-rule') && elementWithRule.push(item);
-      item.getAttribute('validate-success') && successInfo.push(item);
-      item.getAttribute('validate-fail') && failInfo.push(item);
-    }
-  } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion2 && _iterator2.return) {
-        _iterator2.return();
-      }
-    } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
-      }
-    }
+  for (var item = 0; item < groupList.length; item++) {
+    groupList[item].checked && value.push(groupList[item].value);
+    groupList[item].getAttribute('validate-rule') && elementWithRule.push(groupList[item]);
+    groupList[item].getAttribute('validate-success') && successInfo.push(groupList[item]);
+    groupList[item].getAttribute('validate-fail') && failInfo.push(groupList[item]);
   }
 
   if (elementWithRule.length > 1 || successInfo.length > 1 || failInfo.length > 1) {
@@ -172,13 +151,13 @@ function doValidate(eventTarget) {
     }
   } else {
     var validateFunctions = validateRule.split('|');
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
 
     try {
-      for (var _iterator3 = validateFunctions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var item = _step3.value;
+      for (var _iterator2 = validateFunctions[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var item = _step2.value;
 
         var ruleName = void 0,
             ruleParams = void 0;
@@ -216,16 +195,16 @@ function doValidate(eventTarget) {
         }
       }
     } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-          _iterator3.return();
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
         }
       } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
+        if (_didIteratorError2) {
+          throw _iteratorError2;
         }
       }
     }

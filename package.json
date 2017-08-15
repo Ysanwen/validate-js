@@ -7,7 +7,7 @@
     "build": "npm run build-node && npm run build-min",
     "build-node": "node_modules/babel-cli/bin/babel.js src -d dist --presets es2015 --plugins add-module-exports",
     "build-min": "node_modules/webpack/bin/webpack.js --env=production --progress --profile --colors --display-modules",
-    "dev": "NODE_ENV=dev node_modules/webpack-dev-server/bin/webpack-dev-server.js --devtool eval-source-map --progress --colors --hot --inline"
+    "dev": "NODE_ENV=dev node_modules/webpack-dev-server/bin/webpack-dev-server.js --devtool eval-source-map --progress --host 0.0.0.0 --colors --hot --inline"
   },
   "repository": {
     "type": "git",

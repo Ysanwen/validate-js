@@ -39,11 +39,11 @@ function validateGroup(eventTarget){
   let elementWithRule = [];
   let successInfo = [];
   let failInfo = [];
-  for (let item of groupList) {
-    item.checked && value.push(item.value);
-    item.getAttribute('validate-rule') && elementWithRule.push(item);
-    item.getAttribute('validate-success') && successInfo.push(item);
-    item.getAttribute('validate-fail') && failInfo.push(item);
+  for (let item=0; item < groupList.length; item++) {
+    groupList[item].checked && value.push(groupList[item].value);
+    groupList[item].getAttribute('validate-rule') && elementWithRule.push(groupList[item]);
+    groupList[item].getAttribute('validate-success') && successInfo.push(groupList[item]);
+    groupList[item].getAttribute('validate-fail') && failInfo.push(groupList[item]);
   }
 
   if (elementWithRule.length > 1 || successInfo.length > 1 || failInfo.length >1) {
