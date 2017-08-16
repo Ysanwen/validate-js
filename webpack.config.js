@@ -26,13 +26,17 @@ var plugins = DEV ?
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
+      output: {
+        keep_quoted_props: true
+      },
       mangle: {
-        screw_ie8: true,
+        screw_ie8: false,
         keep_fnames: true
       },
       compress: {
-        screw_ie8: true,
-        drop_console: true
+        screw_ie8: false,
+        drop_console: true,
+        properties: false
       }
     })
   ];
@@ -40,7 +44,7 @@ var plugins = DEV ?
 module.exports = {
   devtool: 'source-map',
   entry: {
-    index: './src/index.js'
+    index: ['babel-polyfill', 'raf', './src/index.js']
   },
   output: {
     path: path.resolve(__dirname),
@@ -57,7 +61,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env']
+            presets: ['env','es2015']
           }
         }
       }

@@ -62,35 +62,47 @@
       </div>
     </div>
     <!-- built files will be auto injected -->
+    <!-- <script src='validate-js.min.js'></script> -->
   </body>
   <script>
+  function bindEvent(el, event, callback) {
+      if (document.addEventListener) {
+        return el.addEventListener(event, callback)
+      } else if (document.attachEvent) {
+        return el.attachEvent('on' + event, callback)
+      }
+    }
+
     window.onload = function() {
 
-      document.getElementById('addButton').addEventListener('click', function() {
-        let rule = document.getElementById('rule').value;
-        let trigger = document.getElementById('trigger').value || 'change';
-        let successInfo = document.getElementById('success').value;
-        let failInfo = document.getElementById('fail').value;
+      var addButton = document.getElementById('addButton');
 
-        let newInput = document.createElement("input");
+      bindEvent(addButton, 'click', function() {
+        var rule = document.getElementById('rule').value;
+        var trigger = document.getElementById('trigger').value || 'change';
+        var successInfo = document.getElementById('success').value;
+        var failInfo = document.getElementById('fail').value;
+
+        var newInput = document.createElement("input");
         newInput.className = 'validate';
         rule && newInput.setAttribute('validate-rule', rule);
-        newInput.setAttribute('placeholder', rule || '不能为空')
+        newInput.setAttribute('placeholder', rule || '不能为空');
         newInput.setAttribute('validate-trigger', trigger);
         successInfo && newInput.setAttribute('validate-success', successInfo);
         failInfo && newInput.setAttribute('validate-fail', failInfo);
         document.getElementById('app').insertBefore(newInput,document.getElementById('add-new'));
       });
 
-      document.getElementById('validate-all').addEventListener('click', function(){
-        validate.validateAll()
+      var validateAll = document.getElementById('validate-all');
+      bindEvent(validateAll, 'click', function(){
+        validate.validateAll();
       })
       // attachEvent();
       validate.autoValidate();
       validate.addRule('test', function(value, ruleParams){
         console.log(value,ruleParams);
-        return false
-      })
+        return false;
+      });
     }
   </script>
 </html>

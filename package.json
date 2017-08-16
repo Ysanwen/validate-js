@@ -30,12 +30,12 @@
     "validate-js.min.js"
   ],
   "dependencies": {
-    "validator": "^8.0.0",
-    "tooltip.js": "^1.1.4"
+    "babel-polyfill": "^6.23.0",
+    "raf": "^3.3.2",
+    "tooltip.js": "^1.1.4",
+    "validator": "^8.0.0"
   },
   "devDependencies": {
-    "tooltip.js": "^1.1.4",
-    "validator": "^8.0.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
