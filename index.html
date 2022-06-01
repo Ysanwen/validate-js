@@ -30,19 +30,19 @@
   </head>
   <body>
     <div id="app">
-      <input class="validate" validate-rule="int|len:{min:3,max:5}" validate-success="输入正确" validate-fail="请输入数字" placeholder="输入整数">
-      <input class="validate" validate-rule="test:{a:1,b:2}" validate-success="测试正确" validate-fail="测试失败" placeholder="自定义验证">
+      <input class="validate" validate-rule="int|len:{min:3,max:5}" validate-success="输入正确" validate-fail="请输入数字" placeholder="输入整数,长度3~5">
+      <input class="validate" validate-rule="test:{min:1,max:20}" validate-success="测试正确" validate-fail="测试失败" placeholder="自定义验证 test:{min:1,max:20}">
       <select name="test-select" class="validate" validate-rule="in:['a','b']">
         <option value="a">a</option>
         <option value="b">b</option>
         <option value="c">c</option>
       </select>
       <div><input type="radio" class="validate" name="radio" value="radio1" validate-group="group1"/> radio1</div>
-      <div><input type="radio" class="validate" name="radio" value="radio2" validate-group="group1" validate-rule="in:['radio2','radio3']"/> radio2</div>
+      <div><input type="radio" class="validate" name="radio" value="radio2" validate-group="group1" validate-rule="in:[radio2,radio3]"/> radio2</div>
       <br/>
 
       <input type="checkbox" class="validate" name="checkbox1" validate-group="group2" value="checkbox1"/>checkbox1<br />
-      <input type="checkbox" class="validate" name="checkbox2" validate-group="group2" value="checkbox2" validate-rule="haha"/>checkbox1<br />
+      <input type="checkbox" class="validate" name="checkbox2" validate-group="group2" value="checkbox2" validate-rule="in:[checkbox1, checkbox2]"/>checkbox1<br />
 
       <div class="add-new" id="add-new">
       <hr>
@@ -62,7 +62,7 @@
       </div>
     </div>
     <!-- built files will be auto injected -->
-    <!-- <script src='validate-js.min.js'></script> -->
+    <script src='./dist/validate-js.js'></script>
   </body>
   <script>
   function bindEvent(el, event, callback) {
@@ -101,7 +101,10 @@
       validate.autoValidate();
       validate.addRule('test', function(value, ruleParams){
         console.log(value,ruleParams);
-        return false;
+        var min = parseInt(ruleParams.min);
+        var max = parseInt(ruleParams.max);
+        var value = value ? parseInt(value) : 0
+        return value >= min && value <= max;
       });
     }
   </script>

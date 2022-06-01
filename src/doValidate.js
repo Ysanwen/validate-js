@@ -14,7 +14,13 @@ function parseParams (ruleParams) {
     let result = {};
     for(let item of paramsList) {
       if (item.indexOf(':') >0) {
-        result[item.split(':')[0]] = item.split(':')[1]
+        let paramsKey = item.split(':')[0].trim();
+        let paramsValue = item.split(':')[1].trim();
+        if ((paramsKey === 'min' || paramsKey === 'max') && validator.isInt(paramsValue)) {
+          result[paramsKey] = parseInt(paramsValue);
+        } else {
+          result[paramsKey] = paramsValue
+        }
       } else {
         throw new Error(ruleParams + ' error');
       }
@@ -30,7 +36,9 @@ function parseParams (ruleParams) {
  */
 function validateGroup(eventTarget){
   let groupName = eventTarget.getAttribute('validate-group');
-  if(['radio', 'checkbox'].indexOf(eventTarget.type) <0 ) return;
+  if(['radio', 'checkbox'].indexOf(eventTarget.type) <0 ) {
+    throw new Error('validate-group only support for radio or checkbox');
+  };
   // find all the elements with the same validate-group
   let groupList = document.querySelectorAll('[validate-group=' + groupName +']');
   // find the one with validate-rule and just only one should has the rule
@@ -45,10 +53,8 @@ function validateGroup(eventTarget){
     groupList[item].getAttribute('validate-success') && successInfo.push(groupList[item]);
     groupList[item].getAttribute('validate-fail') && failInfo.push(groupList[item]);
   }
-
   if (elementWithRule.length > 1 || successInfo.length > 1 || failInfo.length >1) {
-    showInfo(groupList[groupListLength -1], false)
-    return console.error('validate group ' + groupName + ' is error');
+    throw new Error(`validate-group: ${groupName} only with one success or fail info`);
   }
   // no rule defined, use default required rule
   let validateResult;
@@ -61,7 +67,9 @@ function validateGroup(eventTarget){
     ruleName = spliteIndex > 0 ? rule.substr(0, spliteIndex) : rule;
     ruleParams = spliteIndex > 0 ? parseParams(rule.substr(spliteIndex+1, rule.length)) : false;
 
-    if (ruleName in userDefine) {
+    if (value.length <= 0) {
+      validateResult = false;
+    } else if (ruleName in userDefine) {
       // call user define function
       value = value.join(',');
       validateResult = ruleParams ? userDefine[ruleName].apply(this, [value, ruleParams]) : 
@@ -73,7 +81,7 @@ function validateGroup(eventTarget){
     } else {
       // no this validate name
       validateResult = false;
-      console.error('no these validate rule: ' + ruleName)
+      throw new Error('no these validate rule: ' + ruleName)
     }
   }
   if (validateResult) {
@@ -83,6 +91,7 @@ function validateGroup(eventTarget){
     failInfo.length === 1 && showInfo(failInfo[0], false);
     failInfo.length === 0 && showInfo(groupList[groupListLength -1], false);
   }
+  return validateResult;
 }
 
 function getValue(eventTarget) {
@@ -98,19 +107,15 @@ function getValue(eventTarget) {
 function doValidate(eventTarget) {
   if (eventTarget.getAttribute('validate-group')) return validateGroup(eventTarget);
   let validateRule = eventTarget.getAttribute('validate-rule');
-  let validateFail = false;
+  let validateResult = true;
   let value = getValue(eventTarget);
   if (!validateRule) {
     // default use required rule
     if (Object.prototype.toString.call(value).indexOf('FileList') > 0) {
-      validateFail = value.length <= 0
+      validateResult = value.length > 0
     } else {
       value = validator.trim(value);
-      validateFail = validator.isEmpty(value);
-    }
-    if (validateFail) {
-      // validate fail
-      console.error('need value');
+      validateResult = !validator.isEmpty(value);
     }
   } else {
     let validateFunctions = validateRule.split('|');
@@ -119,41 +124,34 @@ function doValidate(eventTarget) {
       let spliteIndex = item.indexOf(':');
       ruleName = spliteIndex > 0 ? item.substr(0, spliteIndex) : item;
       ruleParams = spliteIndex > 0 ? parseParams(item.substr(spliteIndex+1, item.length)) : false;
-
-      let validateResult;
       if (ruleName in config.ruleNames) {
         // call the validator function
         validateResult = ruleParams ? 
                           validator[config.ruleNames[ruleName]].apply(this, [value,ruleParams]) :
                           validator[config.ruleNames[ruleName]].apply(this, [value]);
+        let pattern = new RegExp('^do.*');
+        if (pattern.test(ruleName)) {
+          // after do some filter function, need to set new value
+          value = validateResult
+          eventTarget.value = value;
+        }
       } else if (ruleName in userDefine) {
         // call user define function
         validateResult = ruleParams ?  userDefine[ruleName].apply(this, [value,ruleParams]) :
                           userDefine[ruleName].apply(this, [value]);
       } else {
         // no this validate name
-        showInfo(eventTarget, false);
-        console.error('no these validate rule: ' + ruleName)
+        validateResult = false;
+        console.error('no these validate rule: ' + ruleName);
+        break;
       }
-
-      let pattern = new RegExp('^do.*');
-      if (pattern.test(ruleName)) {
-        // after do some filter function, need to set new value
-        value = validateResult
-        eventTarget.value = value;
-      } else {
-        // validate fail
-        if (!validateResult) {
-          console.error('validate rule "' + ruleName +'" error');
-          validateFail = true;
-          break;
-        } else {
-          console.log('validate rule "' + ruleName +'" success');
-        }
+      if (!validateResult) {
+        break;
       }
     }
   }
-  showInfo(eventTarget, !validateFail);
+  showInfo(eventTarget, validateResult);
+  return validateResult;
 }
 
 export default doValidate

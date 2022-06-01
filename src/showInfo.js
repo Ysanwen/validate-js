@@ -25,10 +25,23 @@ function createTip(el, tipId, info) {
   })
 }
 
+const generateTpid = () => {
+  const result = [];
+  for (let i = 0; i < 4; i++) {
+    const upCodeAt = Math.floor(Math.random() * 25) + 65;
+    const number1 = Math.floor(Math.random() * 10);
+    const lowCodeAt = Math.floor(Math.random() * 25) + 97;
+    const number2 = Math.floor(Math.random() * 10);
+    const str = `${String.fromCharCode(upCodeAt)}${number1}${String.fromCharCode(lowCodeAt)}${number2}`
+    result.push(str);
+  }
+  return result.join('-');
+}
+
 function showValidateResult(el, validateResult) {
   let tipId = el.getAttribute('validate-tip');
   if (!tipId) {
-    tipId = new Date().toISOString().replace(/[-:\.]/g, '');
+    tipId = generateTpid();
     el.setAttribute('validate-tip',tipId);
   }
   let successInfo = el.getAttribute('validate-success');

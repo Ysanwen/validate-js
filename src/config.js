@@ -2,7 +2,7 @@ let version = '0.0.1';
 let eventList = ['change', 'keypress', 'keydown', 'keyup', 'blur'];
 let userDefine = {};
 let ruleNames = {
-  contains: 'contains',
+    contains: 'contains',
     equals: 'equals',
     afterDate: 'isAfter',
     alpha: 'isAlpha',

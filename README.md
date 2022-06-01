@@ -25,7 +25,7 @@ import validate from 'validate-js'
 validate.autoValidate()    //对含有class="validate"的input元素进行验证，验证时机通过设置input的validate-trigger属性决定。默认为onchange
 validate.validateAll()     //对全部class="validate"的input元素进行验证。
 
-validate.doValidate(el)    //验证指定的input元素。
+validate.doValidate(el)    //验证指定的input元素, 返回验证结果 true/false
 ```
 
 ### 浏览器端直接引入 
@@ -93,7 +93,7 @@ validate.doValidate(el)    //验证指定的input元素。
 
 ```html
 <div><input type="radio" class="validate" name="radio" value="radio1" validate-group="group1"/> radio1</div>
-<div><input type="radio" class="validate" name="radio" value="radio2" validate-group="group1" validate-rule="in:['radio2','radio3']"/> radio2</div>
+<div><input type="radio" class="validate" name="radio" value="radio2" validate-group="group1" validate-rule="in:[radio2,radio3]"/> radio2</div>
 ```
 
 ### 支持的规则
@@ -117,7 +117,7 @@ doToFloat, doToInt, doTrim, doToString, doKeepWhiteList, doNormalizeEmail
 
 npm install
 
-npm run dev    # 开启dev调试server,对src文件夹下的源文件作出修改后,可在http://localhost:8080/增加相应的规则进行检测
+npm run dev    # 开启dev调试server,对src文件夹下的源文件作出修改后,可在http://localhost:8088/增加相应的规则进行检测
 
 npm run build  # 生成对应的dist模块文件以及validate-js.min.js文件 
 
